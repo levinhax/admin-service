@@ -14,7 +14,7 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "prettier": "prettier --loglevel warn --write \"./**/*.{ts}\" ",
+    "prettier": "prettier --loglevel warn --write \"./**/*.ts\" ",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
