@@ -23,7 +23,7 @@
     "prepare": "husky install"
   },
   "lint-staged": {
-    "src/**/*.{ts}": [
+    "src/**/*.ts": [
       "npm run prettier",
       "npm run lint"
     ]
