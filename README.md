@@ -38,3 +38,15 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+
+## 其他
+
+使用 CLI 创建控制器
+```
+nest g controller [name]
+```
+
+使用 CLI 创建服务类
+```
+nest g service [name]
+```
