@@ -1,11 +1,13 @@
-export class CreateCatDto {
+export class CreateUserDto {
   readonly name: string;
+  readonly email: string;
   readonly age: number;
 }
 
-export class UpdateCatDto {
+export class UpdateUserDto {
   readonly id: number;
   readonly name: string;
+  readonly email: string;
   readonly age: number;
 }
 

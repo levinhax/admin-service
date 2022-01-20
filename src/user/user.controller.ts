@@ -1,18 +1,22 @@
 // import { Controller, HttpCode, Header, Get, Post } from '@nestjs/common';
 import { Controller, Get, Post, Put, Delete, Query, Param, Body } from '@nestjs/common';
 import { Observable, of } from 'rxjs';
-import { CreateCatDto, UpdateCatDto, ListAllEntities } from './user.dto';
+import { CreateUserDto, UpdateUserDto, ListAllEntities } from './user.dto';
+import { UserService } from './user.service';
+import { User } from './user.interface';
 
 // @Controller('/customers/user') // 路径前缀 customers 组合生成路由映射
 @Controller('user')
 export class UserController {
+  constructor(private userService: UserService) {}
+
   @Get()
   // async findAll(): Promise<any[]> {
   //   return [];
   // }
-  findAll(@Query() query: ListAllEntities): Observable<any[]> {
+  findAll(@Query() query: ListAllEntities): Observable<User[]> {
     console.log(`This action returns all user (pageIndex: ${query.pageIndex}, pageSize: ${query.pageSize})`);
-    return of([]);
+    return of(this.userService.findAll() || []);
   }
 
   @Get(':id')
@@ -23,14 +27,15 @@ export class UserController {
   @Post()
   // @HttpCode(204)
   // @Header('Cache-Control', 'none')
-  async create(@Body() createCatDto: CreateCatDto): Promise<string> {
-    console.log('createCatDto: ', createCatDto);
-    return 'This action adds a new user';
+  async create(@Body() createUserDto: CreateUserDto): Promise<void> {
+    console.log('createUserDto: ', createUserDto);
+    // return 'This action adds a new user';
+    this.userService.create(createUserDto);
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateCatDto: UpdateCatDto) {
-    console.log('updateCatDto: ', updateCatDto);
+  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    console.log('updateUserDto: ', updateUserDto);
     return `This action updates user #${id}`;
   }
 
