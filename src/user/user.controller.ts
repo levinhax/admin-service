@@ -1,5 +1,16 @@
 // import { Controller, HttpCode, Header, Get, Post } from '@nestjs/common';
-import { Controller, Get, Post, Put, Delete, Query, Param, Body } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Query,
+  Param,
+  Body,
+  ValidationPipe,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { Observable, of } from 'rxjs';
 import { CreateUserDto, UpdateUserDto, ListAllEntities } from './user.dto';
 import { UserService } from './user.service';
@@ -27,8 +38,13 @@ export class UserController {
   @Post()
   // @HttpCode(204)
   // @Header('Cache-Control', 'none')
-  async create(@Body() createUserDto: CreateUserDto): Promise<void> {
+  async create(@Body(new ValidationPipe()) createUserDto: CreateUserDto): Promise<void> {
     console.log('createUserDto: ', createUserDto);
+    const emailExists = await this.userService.findByEmail(createUserDto.email);
+
+    if (emailExists) {
+      throw new UnprocessableEntityException();
+    }
     // return 'This action adds a new user';
     this.userService.create(createUserDto);
   }
