@@ -1,0 +1,16 @@
+export default {
+  type: process.env.DB_TYPE,
+  host: process.env.DB_HOST,
+  port: Number(process.env.DB_PORT) || 3060,
+  username: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
+  entities: process.env.DB_ENTITIES,
+  synchronize: process.env.DB_SYNCHRONIZE,
+  logging: process.env.DB_LOGGING,
+  autoLoadEntities: process.env.DB_AUTOLOADENTITIES,
+  retryAttempts: process.env.DB_RETRYATTEMPTS,
+  retryDelay: process.env.DB_RETRYDELAY,
+  migrationsRun: process.env.DB_MIGRATIONS_RUN === 'true',
+  migrationsDir: [process.env.DB_MIGRATIONS_DIR],
+};
