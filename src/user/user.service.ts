@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, UpdateResult, DeleteResult } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { InjectConfig, ConfigService } from 'nestjs-config';
 import { UserEntity as User } from '../entities';
@@ -54,11 +54,24 @@ export class UserService {
     });
   }
 
+  async findById(id: number): Promise<User | null> {
+    return await this.userRepository.findOneOrFail(id);
+  }
+
   async getHash(password: string): Promise<string> {
     return await bcrypt.hash(password, this.saltRounds);
   }
 
   async compareHash(password: string, hash: string): Promise<boolean> {
     return await bcrypt.compare(password, hash);
+  }
+
+  async update(user: User): Promise<UpdateResult> {
+    console.log('user: ', user);
+    return await this.userRepository.update(user.id, user);
+  }
+
+  async delete(id: number): Promise<DeleteResult> {
+    return await this.userRepository.delete(id);
   }
 }

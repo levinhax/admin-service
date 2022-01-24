@@ -28,9 +28,26 @@ export class CreateUserDto {
 
 export class UpdateUserDto {
   readonly id: number;
-  readonly name: string;
-  readonly email: string;
-  readonly age: number;
+
+  @IsOptional()
+  @IsEmail()
+  email: string;
+
+  @IsOptional()
+  @IsString()
+  password: string;
+
+  @IsOptional()
+  @IsString()
+  name: string;
+
+  @IsOptional()
+  @IsString()
+  sex: string;
+
+  @IsOptional()
+  @IsNumber()
+  age: number;
 }
 
 export class ListAllEntities {

@@ -9,7 +9,7 @@ export class UserEntity extends BaseEntity {
   email!: string;
 
   @Column({
-    select: false,
+    // select: false,
   })
   password!: string;
 

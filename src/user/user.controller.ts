@@ -10,6 +10,7 @@ import {
   Body,
   ValidationPipe,
   UnprocessableEntityException,
+  NotFoundException,
 } from '@nestjs/common';
 // import { Observable, of } from 'rxjs';
 // import { CreateUserDto, UpdateUserDto, ListAllEntities } from './user.dto';
@@ -44,8 +45,20 @@ export class UserController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): string {
-    return `This action returns user #${id}`;
+  async findOne(@Param('id') id: string): Promise<Response<User>> {
+    // return `This action returns user #${id}`;
+    const user = await this.userService.findById(Number(id));
+    console.log('user: ', user);
+
+    if (!user) {
+      throw new NotFoundException();
+    }
+
+    return {
+      code: 1,
+      data: user,
+      message: '查询用户成功',
+    };
   }
 
   @Post()
@@ -65,13 +78,36 @@ export class UserController {
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    console.log('updateUserDto: ', updateUserDto);
-    return `This action updates user #${id}`;
+  async update(@Param('id') id: string, @Body(new ValidationPipe()) updateUserDto: UpdateUserDto): Promise<Response> {
+    const userEntity = await this.userService.findById(Number(id));
+
+    if (!userEntity) {
+      throw new NotFoundException();
+    }
+
+    await this.userService.update({
+      ...userEntity,
+      ...updateUserDto,
+    });
+
+    return {
+      code: 1,
+      message: '用户更新成功',
+    };
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return `This action removes user #${id}`;
+  async remove(@Param('id') id: string): Promise<Response> {
+    const userEntity = await this.userService.findById(Number(id));
+
+    if (!userEntity) {
+      throw new NotFoundException();
+    }
+
+    await this.userService.delete(Number(id));
+    return {
+      code: 1,
+      message: '用户删除成功',
+    };
   }
 }
