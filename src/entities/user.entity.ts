@@ -16,9 +16,13 @@ export class UserEntity extends BaseEntity {
   @Column()
   name!: string;
 
-  @Column()
+  @Column({
+    default: 'male',
+  })
   sex: string;
 
-  @Column()
+  @Column({
+    default: 18,
+  })
   age: number;
 }

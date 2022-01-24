@@ -6,6 +6,7 @@ import { InjectConfig, ConfigService } from 'nestjs-config';
 import { UserEntity as User } from '../entities';
 import { CreateUserDto } from './user.dto';
 // import { UserModel } from '../models';
+import { QueryOptionsDto } from '../dto';
 
 @Injectable()
 export class UserService {
@@ -27,8 +28,22 @@ export class UserService {
     return result;
   }
 
-  findAll(): User[] {
-    return this.users;
+  // findAll(): User[] {
+  //   return this.users;
+  // }
+  async findAll(query: QueryOptionsDto): Promise<{
+    results: User[];
+    total: number;
+  }> {
+    // SQL: select * from user limit skip,take
+    const [results, total] = await this.userRepository.findAndCount({
+      take: query.pageSize,
+      skip: (query.pageIndex - 1) * query.pageSize,
+    });
+    return {
+      results,
+      total,
+    };
   }
 
   async findByEmail(email: string): Promise<User | null> {
